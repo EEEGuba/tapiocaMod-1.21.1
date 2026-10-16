@@ -19,6 +19,10 @@ public class Config {
             .comment("A magic number")
             .defineInRange("magicNumber", 42, 0, Integer.MAX_VALUE);
 
+    public static final ModConfigSpec.IntValue STARE_EVENT_CHANCE = BUILDER
+            .comment("chance for tapiocas to stare at you")
+            .defineInRange("Tapioca stare chance",100,0,Integer.MAX_VALUE);
+
     public static final ModConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
             .comment("What you want the introduction message to be for the magic number")
             .define("magicNumberIntroduction", "The magic number is... ");

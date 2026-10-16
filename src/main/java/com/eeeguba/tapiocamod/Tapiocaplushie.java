@@ -1,6 +1,8 @@
 package com.eeeguba.tapiocamod;
 
 import com.eeeguba.tapiocamod.item.ModItems;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
 import com.eeeguba.tapiocamod.entity.ModEntities;
@@ -141,10 +143,10 @@ public class Tapiocaplushie {
         }
     }
 
-    //// You can use SubscribeEvent and let the Event Bus discover methods to call
-    //@SubscribeEvent
-    //public void onServerStarting(ServerStartingEvent event) {
-    //    // Do something when the server starts
-    //    LOGGER.info("HELLO from server starting");
-    //}
+    // You can use SubscribeEvent and let the Event Bus discover methods to call
+    @SubscribeEvent
+    public void onServerStarting(ServerStartingEvent event) {
+        // Do something when the server starts
+        LOGGER.info("HELLO from server starting");
+    }
 }

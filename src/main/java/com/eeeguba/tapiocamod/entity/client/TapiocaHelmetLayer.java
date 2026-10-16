@@ -69,19 +69,15 @@ public class TapiocaHelmetLayer
             float netHeadYaw,
             float headPitch) {
 
-        // Pose the separate humanoid model. Its pose won't come from TapiocaModel.
         driverModel.setupAnim(
                 entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch
         );
 
         poseStack.pushPose();
 
-        // Tune these to place/size the humanoid armor model over Tapioca.
         poseStack.translate(0.0F, 0.35F, 0.0F);
         poseStack.scale(1.2F, 1F, 0.9F);
 
-        // This uses the vanilla armor rendering path and reads the entity's
-        // equipment slots. It will render other armor slots too, if occupied.
         armorLayer.render(
                 poseStack,
                 buffer,
