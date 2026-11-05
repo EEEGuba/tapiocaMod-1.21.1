@@ -16,4 +16,6 @@
   "tapiocaplushie.configuration.logDirtBlock": "Log Dirt Block",
   "tapiocaplushie.configuration.magicNumberIntroduction": "Magic Number Text",
   "tapiocaplushie.configuration.magicNumber": "Magic Number",
+  "item.tapiocaplushie.tapioca_spawn_egg": "Tapioca Spawn egg",
+  "entity.tapiocaplushie.tapioca": "Tapioca"
 }

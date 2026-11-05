@@ -4,6 +4,8 @@ import io.netty.channel.unix.GenericUnixChannelOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
@@ -49,6 +51,16 @@ import static com.eeeguba.tapiocamod.Config.STARE_EVENT_CHANCE;
 
 public class TapiocaEntity extends Animal{
 
+    public TapiocaEntity(EntityType<? extends Animal> entityType, Level level) {
+        super(entityType, level);
+        if(!level.isClientSide()) {
+            this.setCanPickUpLoot(true);
+            int min = 1;
+            int max = 6;
+            int range = max - min + 1;
+            setVariant(this, (int) (Math.random() * range) + min);
+        }
+    }
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
             SynchedEntityData.defineId(TapiocaEntity.class, EntityDataSerializers.INT);
     public static int getVariant(TapiocaEntity tapiocaEntity){
@@ -63,16 +75,7 @@ public class TapiocaEntity extends Animal{
             EntityDataSerializers.OPTIONAL_BLOCK_STATE
     );
 
-    
-    public TapiocaEntity(EntityType<? extends Animal> entityType, Level level) {
-        super(entityType, level);
-        if(!level.isClientSide()) {
-            int min = 1;
-            int max = 6;
-            int range = max - min + 1;
-            setVariant(this, (int) (Math.random() * range) + min);
-        }
-    }
+
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -92,7 +95,7 @@ public class TapiocaEntity extends Animal{
         boolean flag = this.canReplaceCurrentItem(stack, itemstack);
 
         if (flag && this.canHoldItem(stack)&&equipmentslot == EquipmentSlot.HEAD) {
-            double d0 = (double)this.getEquipmentDropChance(equipmentslot);
+            double d0 = this.getEquipmentDropChance(equipmentslot);
             if (!itemstack.isEmpty() && (double)Math.max(this.random.nextFloat() - 0.1F, 0.0F) < d0) {
                 this.spawnAtLocation(itemstack);
             }
@@ -157,7 +160,7 @@ public class TapiocaEntity extends Animal{
             this.setFlags(EnumSet.of(Goal.Flag.LOOK));
             this.tapioca = tapiocaEntity;
         }
-        //global sync
+        //global sync, doesnt work like i wanted, but works in a fun way, so im not touching it
         private boolean isGlobalEventWindow() {
             if (!(tapioca.level() instanceof ServerLevel level)) return false;
 
@@ -179,7 +182,7 @@ public class TapiocaEntity extends Animal{
         @Override
         public void tick() {
             super.start();
-            Player player = this.tapioca.level().getNearestPlayer(this.tapioca, 16.0);
+            Player player = this.tapioca.level().getNearestPlayer(this.tapioca, 64.0);
             if (player != null){tapioca.getLookControl().setLookAt(player, 10.0F, 10.0F);}
         }
     }
@@ -210,6 +213,23 @@ public class TapiocaEntity extends Animal{
         public void start() {
             this.tapioca.setCarriedBlock(null);
             this.tapioca.heal(20.0F);
+            MobEffectInstance zoomies = new MobEffectInstance(
+                    // The mob effect to use.
+                    MobEffects.MOVEMENT_SPEED,
+                    // The duration to use, in ticks. Defaults to 0 if not specified.
+                    200,
+                    // The amplifier to use. This is the "strength" of the effect, i.e. Strength I, Strength II, etc;
+                    // starting at 0. Defaults to 0 if not specified.
+                    5,
+                    // Whether the effect is an "ambient" effect, meaning it is being applied by an ambient source,
+                    // of which Minecraft currently has the beacon and the conduit. Defaults to false if not specified.
+                    false,
+                    // Whether the effect is visible in the inventory. Defaults to true if not specified.
+                    true,
+                    // Whether an effect icon is visible in the top right corner. Defaults to true if not specified.
+                    true
+            );
+            this.tapioca.addEffect(zoomies);
             this.tapioca.playSound(SoundEvents.FOX_EAT, 1.0F, 1.0F);
         }
     }

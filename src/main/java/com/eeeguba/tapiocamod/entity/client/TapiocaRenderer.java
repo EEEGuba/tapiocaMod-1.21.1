@@ -2,7 +2,7 @@ package com.eeeguba.tapiocamod.entity.client;
 
 import javax.annotation.Nonnull;
 
-import com.eeeguba.tapiocamod.Tapiocaplushie;
+import com.eeeguba.tapiocamod.Tapioca;
 import com.eeeguba.tapiocamod.entity.custom.TapiocaEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -28,7 +28,7 @@ public class TapiocaRenderer extends MobRenderer<TapiocaEntity, TapiocaModel<Tap
     @Override
     public ResourceLocation getTextureLocation(TapiocaEntity entity){
         var variant = getVariant(entity);
-        return ResourceLocation.fromNamespaceAndPath(Tapiocaplushie.MODID,"textures/entity/tapioca/tapioca"+variant+".png");
+        return ResourceLocation.fromNamespaceAndPath(Tapioca.MODID,"textures/entity/tapioca/tapioca"+variant+".png");
     }
 
     @Override

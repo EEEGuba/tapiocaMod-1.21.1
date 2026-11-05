@@ -70,7 +70,7 @@ public class TapiocaHelmetLayer
             float headPitch) {
 
         driverModel.setupAnim(
-                entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch
+                entity, limbSwing, limbSwingAmount, ageInTicks, 0.0f,0.0f//netHeadYaw, headPitch
         );
 
         poseStack.pushPose();

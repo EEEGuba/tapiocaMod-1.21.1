@@ -1,6 +1,6 @@
 package com.eeeguba.tapiocamod.event;
 
-import com.eeeguba.tapiocamod.Tapiocaplushie;
+import com.eeeguba.tapiocamod.Tapioca;
 import com.eeeguba.tapiocamod.entity.client.TapiocaModel;
 import com.eeeguba.tapiocamod.entity.custom.TapiocaEntity;
 import com.eeeguba.tapiocamod.entity.ModEntities;
@@ -9,7 +9,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 
-@EventBusSubscriber (modid = Tapiocaplushie.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber (modid = Tapioca.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModEventBusEvents {
     @SubscribeEvent 
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event){

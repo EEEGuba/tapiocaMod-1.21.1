@@ -15,12 +15,12 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 // This class will not load on dedicated servers. Accessing client side code from here is safe.
-@Mod(value = Tapiocaplushie.MODID, dist = Dist.CLIENT)
+@Mod(value = Tapioca.MODID, dist = Dist.CLIENT)
 // You can use EventBusSubscriber to automatically register all static methods
 // in the class annotated with @SubscribeEvent
-@EventBusSubscriber(modid = Tapiocaplushie.MODID, value = Dist.CLIENT)
-public class TapiocaplushieClient {
-    public TapiocaplushieClient(ModContainer container) {
+@EventBusSubscriber(modid = Tapioca.MODID, value = Dist.CLIENT)
+public class TapiocaClient {
+    public TapiocaClient(ModContainer container) {
         // Allows NeoForge to create a config screen for this mod's configs.
         // The config screen is accessed by going to the Mods screen > clicking on your
         // mod > clicking on config.
@@ -33,7 +33,7 @@ public class TapiocaplushieClient {
     static void onClientSetup(FMLClientSetupEvent event) {
         EntityRenderers.register(ModEntities.TAPIOCA.get(), TapiocaRenderer::new);
         // Some client setup code
-        Tapiocaplushie.LOGGER.info("HELLO FROM CLIENT SETUP");
-        Tapiocaplushie.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+        Tapioca.LOGGER.info("HELLO FROM CLIENT SETUP");
+        Tapioca.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
     }
 }

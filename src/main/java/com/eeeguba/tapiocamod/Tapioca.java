@@ -33,8 +33,8 @@ import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 // The value here should match an entry in the META-INF/neoforge.mods.toml file
-@Mod(Tapiocaplushie.MODID)
-public class Tapiocaplushie {
+@Mod(Tapioca.MODID)
+public class Tapioca {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "tapiocaplushie";
     // Directly reference a slf4j logger
@@ -52,43 +52,38 @@ public class Tapiocaplushie {
 
     // Creates a new food item with the id "tapiocaplushie:example_id", nutrition 1
     // and saturation 2
-    public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
-            new Item.Properties().food(new FoodProperties.Builder()
-                    .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
+    //public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
+    //        new Item.Properties().food(new FoodProperties.Builder()
+    //                .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
     public static final DeferredBlock<Block> TAPIOCA_BLOCK = BLOCKS.register(
             "tapioca_block",
             () -> new Block(BlockBehaviour.Properties.of()
                     .destroyTime(1.0f)
                     .explosionResistance(1.0f)
-                    .sound(SoundType.GRAVEL)
+                    .sound(SoundType.WOOL)
                     .lightLevel(state -> 15)));
                     
     public static final DeferredItem<BlockItem> TAPIOCA_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(TAPIOCA_BLOCK);
     // Creates a creative tab with the id "tapiocaplushie:example_tab" for the
     // example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAPIOCA_TAB = CREATIVE_MODE_TABS
-            .register("tapiokery", () -> CreativeModeTab.builder()
-                    .title(Component.translatable("itemGroup.tapiocaplushie")) // The language key for the title of your
+            .register("tapioca_mod", () -> CreativeModeTab.builder()
+                    .title(Component.translatable("itemGroup.tapioca")) // The language key for the title of your
                                                                                // CreativeModeTab
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+                    .icon(() -> TAPIOCA_BLOCK_ITEM.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
-                            output.accept(EXAMPLE_ITEM);
                             output.accept(TAPIOCA_BLOCK_ITEM);// Add the example item to the tab. For your own tabs, this
-                            output.accept(ModItems.TUNGSTEN);
-                            output.accept(ModItems.RAW_TUNGSTEN);
-                            output.accept(ModItems.TUNGSTEN_HELMET);
-                            output.accept(ModItems.TUNGSTEN_CHESTPLATE);
-                            output.accept(ModItems.TUNGSTEN_LEGGINGS);
-                            output.accept(ModItems.TUNGSTEN_BOOTS);                             // method is preferred over the event
+                            output.accept(ModItems.HEAD_BOW);
+                           // method is preferred over the event
                     }).build());
 
     // The constructor for the mod class is the first code that is run when your mod
     // is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and
     // pass them in automatically.
-    public Tapiocaplushie(IEventBus modEventBus, ModContainer modContainer) {
+    public Tapioca(IEventBus modEventBus, ModContainer modContainer) {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
@@ -117,28 +112,16 @@ public class Tapiocaplushie {
 
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-
-        if (Config.LOG_DIRT_BLOCK.getAsBoolean()) {
-            LOGGER.info("DIRT BLOCK >> {}", BuiltInRegistries.BLOCK.getKey(Blocks.DIRT));
-        }
-
-        LOGGER.info("{}{}", Config.MAGIC_NUMBER_INTRODUCTION.get(), Config.MAGIC_NUMBER.getAsInt());
-
+        LOGGER.info("Tapioca mod is setting up");
         Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
     }
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(EXAMPLE_ITEM);
             event.accept(TAPIOCA_BLOCK_ITEM);
-            event.accept(ModItems.TUNGSTEN);
-            event.accept(ModItems.RAW_TUNGSTEN);
-            event.accept(ModItems.TUNGSTEN_HELMET);
-            event.accept(ModItems.TUNGSTEN_CHESTPLATE);
-            event.accept(ModItems.TUNGSTEN_LEGGINGS);
-            event.accept(ModItems.TUNGSTEN_BOOTS);
+            event.accept(ModItems.HEAD_BOW);
+            event.accept(ModItems.TAPIOCA_SPAWN_EGG);
 
         }
     }
