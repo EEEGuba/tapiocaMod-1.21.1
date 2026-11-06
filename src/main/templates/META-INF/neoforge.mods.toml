@@ -46,7 +46,7 @@ authors="EEEGuba"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-training excercise tapioca plushie mod
+adds tapiocas, which are weird creatures based on the summikko franchise and a head bow
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.

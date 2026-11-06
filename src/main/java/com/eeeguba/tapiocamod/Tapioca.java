@@ -36,21 +36,21 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 @Mod(Tapioca.MODID)
 public class Tapioca {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "tapiocaplushie";
+    public static final String MODID = "tapiocamod";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
     // Create a Deferred Register to hold Blocks which will all be registered under
-    // the "tapiocaplushie" namespace
+    // the "tapiocamod" namespace
     public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(MODID);
     // Create a Deferred Register to hold Items which will all be registered under
-    // the "tapiocaplushie" namespace
+    // the "tapiocamod" namespace
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(MODID);
     // Create a Deferred Register to hold CreativeModeTabs which will all be
-    // registered under the "tapiocaplushie" namespace
+    // registered under the "tapiocamod" namespace
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
             .create(Registries.CREATIVE_MODE_TAB, MODID);
 
-    // Creates a new food item with the id "tapiocaplushie:example_id", nutrition 1
+    // Creates a new food item with the id "tapiocamod:example_id", nutrition 1
     // and saturation 2
     //public static final DeferredItem<Item> EXAMPLE_ITEM = ITEMS.registerSimpleItem("example_item",
     //        new Item.Properties().food(new FoodProperties.Builder()
@@ -65,7 +65,7 @@ public class Tapioca {
                     .lightLevel(state -> 15)));
                     
     public static final DeferredItem<BlockItem> TAPIOCA_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(TAPIOCA_BLOCK);
-    // Creates a creative tab with the id "tapiocaplushie:example_tab" for the
+    // Creates a creative tab with the id "tapiocamod:example_tab" for the
     // example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAPIOCA_TAB = CREATIVE_MODE_TABS
             .register("tapioca_mod", () -> CreativeModeTab.builder()
@@ -87,6 +87,7 @@ public class Tapioca {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
 
+
         ModItems.register(modEventBus);
         // Register the Deferred Register to the mod event bus so blocks get registered
         BLOCKS.register(modEventBus);
@@ -97,7 +98,7 @@ public class Tapioca {
 
         // Register ourselves for server and other game events we are interested in.
         // Note that this is necessary if and only if we want *this* class
-        // (tapiocaplushie) to respond directly to events.
+        // (tapiocamod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in
         // this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);

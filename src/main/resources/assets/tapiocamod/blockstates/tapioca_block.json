@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tapiocaplushie:block/tapioca_block"
+      "model": "tapiocamod:block/tapioca_block"
     }
   }
 }

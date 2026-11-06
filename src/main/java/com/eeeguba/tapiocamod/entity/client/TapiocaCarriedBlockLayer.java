@@ -25,7 +25,7 @@ public class TapiocaCarriedBlockLayer extends RenderLayer<TapiocaEntity, Tapioca
         BlockState state = entity.getCarriedBlock();
         if (state != null) {
             poseStack.pushPose();
-            poseStack.translate(0.0F, 0.6875F, -0.5F);
+            poseStack.translate(0.0F, 0.6875F, -0.4F);//z was -0.5f
             poseStack.mulPose(Axis.XP.rotationDegrees(20.0F));
             poseStack.scale(1.0F, -1.0F, 1.0F);
             poseStack.mulPose(Axis.YP.rotationDegrees(45.0F));

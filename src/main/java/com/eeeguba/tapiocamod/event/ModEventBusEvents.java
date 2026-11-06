@@ -2,6 +2,7 @@ package com.eeeguba.tapiocamod.event;
 
 import com.eeeguba.tapiocamod.Tapioca;
 import com.eeeguba.tapiocamod.entity.client.TapiocaModel;
+import com.eeeguba.tapiocamod.entity.custom.MobEffectHandler;
 import com.eeeguba.tapiocamod.entity.custom.TapiocaEntity;
 import com.eeeguba.tapiocamod.entity.ModEntities;
 import net.neoforged.bus.api.SubscribeEvent;

@@ -4,9 +4,11 @@ import io.netty.channel.unix.GenericUnixChannelOption;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BiomeTags;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -18,7 +20,6 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.item.ItemStack;
@@ -31,14 +32,16 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import com.eeeguba.tapiocamod.entity.ModEntities;
 
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.event.EventHooks;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +53,8 @@ import java.util.Random;
 import static com.eeeguba.tapiocamod.Config.STARE_EVENT_CHANCE;
 
 public class TapiocaEntity extends Animal{
-
+    public boolean SPLIT_STOPPER = false;//IN TICKS
+    //backup if biome variants mess up somewhere
     public TapiocaEntity(EntityType<? extends Animal> entityType, Level level) {
         super(entityType, level);
         if(!level.isClientSide()) {
@@ -66,7 +70,7 @@ public class TapiocaEntity extends Animal{
     public static int getVariant(TapiocaEntity tapiocaEntity){
         return tapiocaEntity.entityData.get(DATA_VARIANT);
     };
-    private static void setVariant(TapiocaEntity tapiocaEntity, int variant){
+    static void setVariant(TapiocaEntity tapiocaEntity, int variant){
         tapiocaEntity.entityData.set(DATA_VARIANT, Mth.clamp(variant, 1, 6));
     }
     private static final EntityDataAccessor<Optional<BlockState>> DATA_CARRY_STATE =
@@ -76,6 +80,56 @@ public class TapiocaEntity extends Animal{
     );
 
 
+    @Override
+    public SpawnGroupData finalizeSpawn(
+            ServerLevelAccessor level,
+            DifficultyInstance difficulty,
+            MobSpawnType spawnType,
+            SpawnGroupData spawnGroupData
+    ) {
+        SpawnGroupData data = super.finalizeSpawn(
+                level,
+                difficulty,
+                spawnType,
+                spawnGroupData
+        );
+    //    "minecraft:flower_forest",
+    //    "minecraft:meadow",
+    //    "minecraft:cherry_grove",
+    //      v1
+    //    "#minecraft:is_snowy",
+    //      v2
+    //    "#minecraft:is_nether",
+    //      v3
+    //    "#minecraft:desert",
+    //      v4
+    //    "#minecraft:jungle",
+    //      v5
+    //    "#minecraft:is_end"
+    //      v6
+
+        //this is a mess but some really dont want to spawn
+        if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_END)) {
+            setVariant(this, 6);
+        }
+        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_SNOWY)) {
+            setVariant(this,2);
+        }
+        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_NETHER)) {
+            setVariant(this, 3);
+        }
+        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_DESERT)) {
+            setVariant(this,4);
+        }
+        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_JUNGLE)) {
+            setVariant(this, 5);
+        }
+        else { //first is last cause triple check . _ .
+            setVariant(this,1);
+        }
+
+        return data;
+    }
 
     @Override
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
@@ -187,7 +241,7 @@ public class TapiocaEntity extends Animal{
         }
     }
 
-    static class TapiocaEatFlowerGoal extends Goal {
+    class TapiocaEatFlowerGoal extends Goal {
         private final TapiocaEntity tapioca;
 
         public TapiocaEatFlowerGoal(TapiocaEntity tapiocaEntity) {
@@ -211,6 +265,7 @@ public class TapiocaEntity extends Animal{
         }
         @Override
         public void start() {
+            this.tapioca.SPLIT_STOPPER=false;
             this.tapioca.setCarriedBlock(null);
             this.tapioca.heal(20.0F);
             MobEffectInstance zoomies = new MobEffectInstance(
@@ -276,7 +331,8 @@ public class TapiocaEntity extends Animal{
         return Animal.createLivingAttributes()
             .add(Attributes.MAX_HEALTH, 20d)
             .add(Attributes.MOVEMENT_SPEED,0.1d)
-            .add(Attributes.FOLLOW_RANGE,24d);
+            .add(Attributes.FOLLOW_RANGE,24d)
+            .add(Attributes.SCALE, 1.0D);
     }
     @Override
     @Nullable

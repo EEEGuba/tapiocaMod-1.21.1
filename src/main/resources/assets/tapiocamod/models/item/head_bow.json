@@ -2,8 +2,8 @@
 	"format_version": "1.21.11",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"0": "tapiocaplushie:item/bow/main_bow",
-		"particle": "tapiocaplushie:item/bow/main_bow"
+		"0": "tapiocamod:item/bow/main_bow",
+		"particle": "tapiocamod:item/bow/main_bow"
 	},
 	"elements":[
 		{

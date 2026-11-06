@@ -30,7 +30,7 @@ public class ModRecipeProvider extends RecipeProvider implements IConditionBuild
                 .pattern("   ")
                 .pattern("WSW")
                 .pattern("   ")
-                .define('W', Items.PINK_WOOL)
+                .define('W', Items.CYAN_WOOL)
                 .define('S', Items.STRING)
                 .unlockedBy("has_wool", has(Items.WHITE_WOOL)).save(recipeOutput);
     }

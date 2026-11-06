@@ -19,7 +19,7 @@ import net.minecraft.world.entity.Entity;
 
 public class TapiocaModel<T extends Entity> extends HierarchicalModel<T> {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
-	public static final ModelLayerLocation LAYER_LOCATION =  new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("tapiocaplushie","tapioca"),"main");
+	public static final ModelLayerLocation LAYER_LOCATION =  new ModelLayerLocation(ResourceLocation.fromNamespaceAndPath("tapiocamod","tapioca"),"main");
 	private final ModelPart body;
 	private final ModelPart LArm;
 	private final ModelPart LLeg;
