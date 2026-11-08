@@ -37,6 +37,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.BlockHitResult;
@@ -59,10 +61,28 @@ public class TapiocaEntity extends Animal{
         super(entityType, level);
         if(!level.isClientSide()) {
             this.setCanPickUpLoot(true);
-            int min = 1;
-            int max = 6;
-            int range = max - min + 1;
-            setVariant(this, (int) (Math.random() * range) + min);
+            if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_END)) {
+                setVariant(this, 6);
+            }
+            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_SNOWY)) {
+                setVariant(this,2);
+            }
+            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_NETHER)) {
+                setVariant(this, 3);
+            }
+            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_DESERT)) {
+                setVariant(this,4);
+            }
+            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_JUNGLE)) {
+                setVariant(this, 5);
+            }
+            else { //first is last cause triple check . _ .
+                setVariant(this,1);
+            }
+            //int min = 1;
+            //int max = 6;
+            //int range = max - min + 1;
+            //setVariant(this, (int) (Math.random() * range) + min);
         }
     }
     private static final EntityDataAccessor<Integer> DATA_VARIANT =
@@ -193,7 +213,7 @@ public class TapiocaEntity extends Animal{
         this.goalSelector.addGoal(0,new FloatGoal(this));
         this.goalSelector.addGoal(0,new TapiocaStareAtPlayerGoal(this));
         this.goalSelector.addGoal(1,new BreedGoal(this, 1.5d));
-        this.goalSelector.addGoal(1,new TapiocaEatFlowerGoal(this));
+        this.goalSelector.addGoal(1, new TapiocaEatFlowerGoal(this));
         this.goalSelector.addGoal(1,new TapiocaPickFlowerGoal(this));
         this.goalSelector.addGoal(2,new RandomStrollGoal(this, 1));
         //this.goalSelector.addGoal(2,new EatBlockGoal(this));
@@ -241,7 +261,7 @@ public class TapiocaEntity extends Animal{
         }
     }
 
-    class TapiocaEatFlowerGoal extends Goal {
+    static class TapiocaEatFlowerGoal extends Goal {
         private final TapiocaEntity tapioca;
 
         public TapiocaEatFlowerGoal(TapiocaEntity tapiocaEntity) {
@@ -315,7 +335,10 @@ public class TapiocaEntity extends Animal{
                 Vec3 vec31 = new Vec3((double)i + (double)0.5F, (double)j + (double)0.5F, (double)k + (double)0.5F);
                 BlockHitResult blockhitresult = level.clip(new ClipContext(vec3, vec31, net.minecraft.world.level.ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this.tapioca));
                 boolean flag = blockhitresult.getBlockPos().equals(blockpos);
-                if (blockstate.is(BlockTags.SMALL_FLOWERS) && flag) {
+                if (blockstate.is(BlockTags.SMALL_FLOWERS)||blockstate.is(BlockTags.SAPLINGS)||
+                        blockstate.is(Blocks.FERN)||blockstate.is(Blocks.CRIMSON_FUNGUS)||
+                        blockstate.is(Blocks.WARPED_FUNGUS)||blockstate.is(Blocks.BROWN_MUSHROOM)||
+                        blockstate.is(Blocks.RED_MUSHROOM) && flag) {//||blockstate.is(Blocks.BAMBOO)
                     level.removeBlock(blockpos, false);
                     if (!level.isClientSide) {
                         this.tapioca.playSound(SoundEvents.GRASS_BREAK, 1.0F, 1.0F);
@@ -331,8 +354,8 @@ public class TapiocaEntity extends Animal{
         return Animal.createLivingAttributes()
             .add(Attributes.MAX_HEALTH, 20d)
             .add(Attributes.MOVEMENT_SPEED,0.1d)
-            .add(Attributes.FOLLOW_RANGE,24d)
-            .add(Attributes.SCALE, 1.0D);
+            .add(Attributes.FOLLOW_RANGE,24d);
+            //.add(Attributes.SCALE, 1.0D);
     }
     @Override
     @Nullable

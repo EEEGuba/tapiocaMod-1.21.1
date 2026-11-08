@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:grass_block",
+    "minecraft:ice",
+    "minecraft:mycelium",
+    "minecraft:end_stone",
+    "minecraft:netherrack",
+    "minecraft:basalt",
+    "minecraft:soul_sand",
+    "minecraft:soul_soil",
+    "minecraft:crimson_nylium",
+    "minecraft:red_sand",
+    "minecraft:sand",
+    "minecraft:packed_ice",
+    "minecraft:snow",
+    "minecraft:snow_block",
+    "minecraft:dirt"
+  ]
+}
