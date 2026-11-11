@@ -1,0 +1,10 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#tapiocamod:tapioca_spawn_biomes_priority",
+  "spawners": {
+    "type": "tapiocamod:tapioca",
+    "maxCount": 3,
+    "minCount": 1,
+    "weight": 30
+  }
+}

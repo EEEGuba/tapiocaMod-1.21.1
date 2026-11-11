@@ -21,20 +21,17 @@ public class Config {
 
     public static final ModConfigSpec.IntValue STARE_EVENT_CHANCE = BUILDER
             .comment("chance for tapiocas to stare at you for no reason")
-            .defineInRange("Tapioca stare chance",100,0,Integer.MAX_VALUE);
+            .defineInRange("tapioca_stare_chance",100,0,Integer.MAX_VALUE);
 
     //public static final ModConfigSpec.ConfigValue<String> MAGIC_NUMBER_INTRODUCTION = BUILDER
     //        .comment("What you want the introduction message to be for the magic number")
     //        .define("magicNumberIntroduction", "The magic number is... ");
 //
     // a list of strings that are treated as resource locations for items
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
-            .comment("A list of items to log on common setup.")
-            .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
-
+    //public static final ModConfigSpec.ConfigValue<List<? extends String>> ITEM_STRINGS = BUILDER
+    //        .comment("A list of items to log on common setup.")
+    //        .defineListAllowEmpty("items", List.of("minecraft:iron_ingot"), () -> "", Config::validateItemName);
+//
     static final ModConfigSpec SPEC = BUILDER.build();
 
-    private static boolean validateItemName(final Object obj) {
-        return obj instanceof String itemName && BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse(itemName));
-    }
 }

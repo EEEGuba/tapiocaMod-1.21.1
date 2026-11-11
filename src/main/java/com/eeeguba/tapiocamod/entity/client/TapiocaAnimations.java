@@ -11,7 +11,7 @@ import net.minecraft.client.animation.KeyframeAnimations;
 /**
  * * Made with Blockbench 5.2.1
  * * Exported for Minecraft version 1.19 or later with Mojang mappings
- * * @author Author
+ * * @author EEEGuba
  *
  */
 public class TapiocaAnimations {

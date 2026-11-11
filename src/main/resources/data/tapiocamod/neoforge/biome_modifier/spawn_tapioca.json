@@ -3,8 +3,8 @@
   "biomes": "#tapiocamod:tapioca_spawn_biomes",
   "spawners": {
     "type": "tapiocamod:tapioca",
-    "maxCount": 10,
-    "minCount": 5,
-    "weight": 100
+    "maxCount": 3,
+    "minCount": 1,
+    "weight": 5
   }
 }

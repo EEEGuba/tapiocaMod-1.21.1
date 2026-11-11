@@ -2,6 +2,7 @@ package com.eeeguba.tapiocamod.entity.custom;
 
 import io.netty.channel.unix.GenericUnixChannelOption;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.Holder;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.BiomeTags;
@@ -61,24 +62,6 @@ public class TapiocaEntity extends Animal{
         super(entityType, level);
         if(!level.isClientSide()) {
             this.setCanPickUpLoot(true);
-            if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_END)) {
-                setVariant(this, 6);
-            }
-            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_SNOWY)) {
-                setVariant(this,2);
-            }
-            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_NETHER)) {
-                setVariant(this, 3);
-            }
-            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_DESERT)) {
-                setVariant(this,4);
-            }
-            else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_JUNGLE)) {
-                setVariant(this, 5);
-            }
-            else { //first is last cause triple check . _ .
-                setVariant(this,1);
-            }
             //int min = 1;
             //int max = 6;
             //int range = max - min + 1;
@@ -113,42 +96,45 @@ public class TapiocaEntity extends Animal{
                 spawnType,
                 spawnGroupData
         );
-    //    "minecraft:flower_forest",
-    //    "minecraft:meadow",
-    //    "minecraft:cherry_grove",
-    //      v1
-    //    "#minecraft:is_snowy",
-    //      v2
-    //    "#minecraft:is_nether",
-    //      v3
-    //    "#minecraft:desert",
-    //      v4
-    //    "#minecraft:jungle",
-    //      v5
-    //    "#minecraft:is_end"
-    //      v6
+        initializeVariantFromBiome(level,this.blockPosition());
 
+        return data;
+    }
+    public void initializeVariantFromBiome(ServerLevelAccessor level, BlockPos pos){
+        //    "minecraft:flower_forest",
+        //    "minecraft:meadow",
+        //    "minecraft:cherry_grove",
+        //      v1
+        //    "#minecraft:is_snowy",
+        //      v2
+        //    "#minecraft:is_nether",
+        //      v3
+        //    "#minecraft:desert",
+        //      v4
+        //    "#minecraft:jungle",
+        //      v5
+        //    "#minecraft:is_end"
+        //      v6
+        Holder<Biome> currentBiome = level.getBiome(pos);
         //this is a mess but some really dont want to spawn
-        if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_END)) {
+        if (currentBiome.is(Tags.Biomes.IS_END)) {
             setVariant(this, 6);
         }
-        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_SNOWY)) {
-            setVariant(this,2);
+        else if (currentBiome.is(Tags.Biomes.IS_SNOWY)) {
+            setVariant(this, 2);
         }
-        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_NETHER)) {
+        else if (currentBiome.is(Tags.Biomes.IS_NETHER)) {
             setVariant(this, 3);
         }
-        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_DESERT)) {
-            setVariant(this,4);
+        else if (currentBiome.is(Tags.Biomes.IS_DESERT)) {
+            setVariant(this, 4);
         }
-        else if (level.getBiome(this.blockPosition()).is(Tags.Biomes.IS_JUNGLE)) {
+        else if (currentBiome.is(Tags.Biomes.IS_JUNGLE)) {
             setVariant(this, 5);
         }
         else { //first is last cause triple check . _ .
             setVariant(this,1);
         }
-
-        return data;
     }
 
     @Override
@@ -158,6 +144,7 @@ public class TapiocaEntity extends Animal{
         builder.define(DATA_VARIANT,1);
     }
     @Override
+    //doesnt work, but its not the real breeding mechanic, they just like bread now
     public boolean isFood(ItemStack stack) {
         return stack.is(Items.BREAD);
     }
@@ -213,7 +200,7 @@ public class TapiocaEntity extends Animal{
         this.goalSelector.addGoal(0,new FloatGoal(this));
         this.goalSelector.addGoal(0,new TapiocaStareAtPlayerGoal(this));
         this.goalSelector.addGoal(1,new BreedGoal(this, 1.5d));
-        this.goalSelector.addGoal(1, new TapiocaEatFlowerGoal(this));
+        this.goalSelector.addGoal(1,new TapiocaEatFlowerGoal(this));
         this.goalSelector.addGoal(1,new TapiocaPickFlowerGoal(this));
         this.goalSelector.addGoal(2,new RandomStrollGoal(this, 1));
         //this.goalSelector.addGoal(2,new EatBlockGoal(this));
@@ -335,10 +322,10 @@ public class TapiocaEntity extends Animal{
                 Vec3 vec31 = new Vec3((double)i + (double)0.5F, (double)j + (double)0.5F, (double)k + (double)0.5F);
                 BlockHitResult blockhitresult = level.clip(new ClipContext(vec3, vec31, net.minecraft.world.level.ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, this.tapioca));
                 boolean flag = blockhitresult.getBlockPos().equals(blockpos);
-                if (blockstate.is(BlockTags.SMALL_FLOWERS)||blockstate.is(BlockTags.SAPLINGS)||
+                if (flag&&blockstate.is(BlockTags.SMALL_FLOWERS)||blockstate.is(BlockTags.SAPLINGS)||
                         blockstate.is(Blocks.FERN)||blockstate.is(Blocks.CRIMSON_FUNGUS)||
                         blockstate.is(Blocks.WARPED_FUNGUS)||blockstate.is(Blocks.BROWN_MUSHROOM)||
-                        blockstate.is(Blocks.RED_MUSHROOM) && flag) {//||blockstate.is(Blocks.BAMBOO)
+                        blockstate.is(Blocks.RED_MUSHROOM)||blockstate.is(Blocks.DEAD_BUSH)) {
                     level.removeBlock(blockpos, false);
                     if (!level.isClientSide) {
                         this.tapioca.playSound(SoundEvents.GRASS_BREAK, 1.0F, 1.0F);

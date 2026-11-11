@@ -56,15 +56,15 @@ public class Tapioca {
     //        new Item.Properties().food(new FoodProperties.Builder()
     //                .alwaysEdible().nutrition(1).saturationModifier(2f).build()));
 
-    public static final DeferredBlock<Block> TAPIOCA_BLOCK = BLOCKS.register(
-            "tapioca_block",
-            () -> new Block(BlockBehaviour.Properties.of()
-                    .destroyTime(1.0f)
-                    .explosionResistance(1.0f)
-                    .sound(SoundType.WOOL)
-                    .lightLevel(state -> 15)));
+    //public static final DeferredBlock<Block> TAPIOCA_BLOCK = BLOCKS.register(
+    //        "tapioca_block",
+    //        () -> new Block(BlockBehaviour.Properties.of()
+    //                .destroyTime(1.0f)
+    //                .explosionResistance(1.0f)
+    //                .sound(SoundType.WOOL)
+    //                .lightLevel(state -> 15)));
                     
-    public static final DeferredItem<BlockItem> TAPIOCA_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(TAPIOCA_BLOCK);
+    //public static final DeferredItem<BlockItem> TAPIOCA_BLOCK_ITEM = ITEMS.registerSimpleBlockItem(TAPIOCA_BLOCK);
     // Creates a creative tab with the id "tapiocamod:example_tab" for the
     // example item, that is placed after the combat tab
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> TAPIOCA_TAB = CREATIVE_MODE_TABS
@@ -72,10 +72,11 @@ public class Tapioca {
                     .title(Component.translatable("itemGroup.tapioca")) // The language key for the title of your
                                                                                // CreativeModeTab
                     .withTabsBefore(CreativeModeTabs.COMBAT)
-                    .icon(() -> TAPIOCA_BLOCK_ITEM.get().getDefaultInstance())
+                    .icon(() -> ModItems.HEAD_BOW.get().getDefaultInstance())
                     .displayItems((parameters, output) -> {
-                            output.accept(TAPIOCA_BLOCK_ITEM);// Add the example item to the tab. For your own tabs, this
+                            //output.accept(TAPIOCA_BLOCK_ITEM);// Add the example item to the tab. For your own tabs, this
                             output.accept(ModItems.HEAD_BOW);
+                            output.accept(ModItems.TAPIOCA_SPAWN_EGG);
                            // method is preferred over the event
                     }).build());
 
@@ -114,14 +115,17 @@ public class Tapioca {
     private void commonSetup(FMLCommonSetupEvent event) {
         // Some common setup code
         LOGGER.info("Tapioca mod is setting up");
-        Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
+        //Config.ITEM_STRINGS.get().forEach((item) -> LOGGER.info("ITEM >> {}", item));
     }
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-            event.accept(TAPIOCA_BLOCK_ITEM);
+        if (event.getTabKey() == CreativeModeTabs.COMBAT) {
+            //event.accept(TAPIOCA_BLOCK_ITEM);
             event.accept(ModItems.HEAD_BOW);
+        }
+        if (event.getTabKey() == CreativeModeTabs.SPAWN_EGGS) {
+            //event.accept(TAPIOCA_BLOCK_ITEM);
             event.accept(ModItems.TAPIOCA_SPAWN_EGG);
 
         }

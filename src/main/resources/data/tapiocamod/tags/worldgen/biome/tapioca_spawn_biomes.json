@@ -5,9 +5,6 @@
     "minecraft:flower_forest",
     "minecraft:meadow",
     "minecraft:cherry_grove",
-    "#c:is_desert",
-    "#c:is_jungle",
-    "#c:is_nether",
-    "#c:is_end"
+    "#c:is_desert"
   ]
 }

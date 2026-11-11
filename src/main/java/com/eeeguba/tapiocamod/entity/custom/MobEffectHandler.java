@@ -4,6 +4,8 @@ import com.eeeguba.tapiocamod.Tapioca;
 import com.eeeguba.tapiocamod.entity.ModEntities;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffects;
 import net.neoforged.neoforge.event.entity.living.MobEffectEvent;
 
@@ -49,15 +51,16 @@ public class MobEffectHandler {
                 );
 
                 baby.setBaby(true);
-                TapiocaEntity.setVariant(baby,babyVariant);
                 baby.moveTo(
                         parent.getX() + (i == 0 ? -0.5 : 0.5),
                         parent.getY(),
                         parent.getZ(),
                         parent.getYRot(),
                         0
-                );
 
+                );
+                baby.playSound(SoundEvents.TRIAL_SPAWNER_EJECT_ITEM);
+                baby.initializeVariantFromBiome(level, baby.blockPosition());
                 level.addFreshEntity(baby);
             }
         }
