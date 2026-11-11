@@ -46,7 +46,7 @@ authors="EEEGuba"
 
 # The description text for the mod (multi line!) (#mandatory)
 description='''
-adds tapiocas, which are weird creatures based on the summikko franchise and a head bow
+this mod adds tapiocas, weird creatures based on the summikko franchise also adds a wearable head bow
 '''
 
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
